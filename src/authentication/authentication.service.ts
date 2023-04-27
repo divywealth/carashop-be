@@ -49,8 +49,14 @@ export class AuthenticationService {
       }else if(!await bcrypt.compare(loginUserDto.password, existingUser.password)){
         throw new HttpException("password is not correct", HttpStatus.BAD_REQUEST)
       }else {
-        
-        return existingUser
+        const payload = {
+          userId: existingUser.id,
+          phoneNo: existingUser.email
+        }
+        return {
+          user: existingUser,
+          access_token: this.jwtService.sign({user: existingUser}),
+        };
       }
       
     }catch(e) {

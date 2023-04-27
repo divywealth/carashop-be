@@ -26,11 +26,6 @@ import { JwtModule } from '@nestjs/jwt';
       entities: [User, Product],
       synchronize: true,
     }),
-    JwtModule.register({
-      global: true,
-      secret: process.env.JWT_SECRET,
-      signOptions: {expiresIn: '1d'}
-    }),
     UserModule, ProductModule, ImageModule, AuthenticationModule
     
   ],

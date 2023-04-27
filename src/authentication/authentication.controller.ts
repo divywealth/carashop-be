@@ -4,7 +4,6 @@ import { CreateAuthenticationDto } from './dto/create-authentication.dto';
 import { UpdateAuthenticationDto } from './dto/update-authentication.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/login-user.dto';
-import { JwtService } from '@nestjs/jwt';
 
 @Controller({
   path: 'user',
@@ -13,14 +12,13 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthenticationController {
   constructor(
     private readonly authenticationService: AuthenticationService,
-    private jwtService: JwtService
     ) 
   {}
 
   @Post()
   async create(@Body() body) {
     const saltOrRounds = 10;
-    const hash = await bcrypt.hash(body.password, saltOrRounds);
+    const hashedPassword = await bcrypt.hash(body.password, saltOrRounds);
     const createAuthenticationDto: CreateAuthenticationDto = {
       firstName: body.firstName,
       lastName: body.lastName,
@@ -29,7 +27,7 @@ export class AuthenticationController {
       street: body.street,
       city: body.city,
       country: body.country, 
-      password: hash
+      password: hashedPassword
     }
     return this.authenticationService.create(createAuthenticationDto);
   }
