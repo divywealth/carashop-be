@@ -10,6 +10,6 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
-  await app.listen(port);
+  await app.listen(port || 3000);
 }
 bootstrap();
