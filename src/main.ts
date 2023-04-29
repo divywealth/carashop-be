@@ -5,11 +5,10 @@ import { VersioningType } from '@nestjs/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const configservice = app.get(ConfigService)
-  const port = configservice.get('PORT')
+  
   app.enableVersioning({
     type: VersioningType.URI,
   });
-  await app.listen(port || 3000);
+  await app.listen(3000);
 }
 bootstrap();
