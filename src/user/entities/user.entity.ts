@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Userproduct } from "src/userproduct/entities/userproduct.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -28,21 +29,6 @@ export class User {
     @Column({
         nullable: false
     })
-    street: string;
-
-    @Column({
-        nullable: false
-    })
-    city: string;
-
-    @Column({
-        nullable: false
-    })
-    country: string;
-
-    @Column({
-        nullable: false
-    })
     password: string;
 
     @CreateDateColumn()
@@ -53,5 +39,8 @@ export class User {
 
     @DeleteDateColumn()
     deletedAt: Date;
+
+    @OneToMany(() => Userproduct, (userproduct) => userproduct.user)
+    public userProduct: Userproduct
 
 }

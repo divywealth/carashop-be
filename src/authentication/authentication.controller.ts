@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe} from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateAuthenticationDto } from './dto/create-authentication.dto';
 import { UpdateAuthenticationDto } from './dto/update-authentication.dto';
@@ -15,7 +15,9 @@ export class AuthenticationController {
     ) 
   {}
 
+
   @Post()
+  @UsePipes(ValidationPipe)
   async create(@Body() body) {
     const saltOrRounds = 10;
     const hashedPassword = await bcrypt.hash(body.password, saltOrRounds);
@@ -24,9 +26,6 @@ export class AuthenticationController {
       lastName: body.lastName,
       email: body.email,
       phoneNo: body.phoneNo,
-      street: body.street,
-      city: body.city,
-      country: body.country, 
       password: hashedPassword
     }
     return this.authenticationService.create(createAuthenticationDto);
@@ -34,8 +33,6 @@ export class AuthenticationController {
 
   @Post('login')
   async loginUser(@Body() loginUserDto: LoginUserDto) {
-
-    
     return this.authenticationService.loginUser(loginUserDto)
   }
 

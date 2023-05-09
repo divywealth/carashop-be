@@ -15,14 +15,14 @@ export class AuthenticationService {
     private jwtService: JwtService
   ){}
   
-  async create(createAuthenticationDto: CreateAuthenticationDto) {
+  async create(createAuthenticationDto: CreateAuthenticationDto) :Promise<User> {
     try {
       const existingUser = await this.UserRepository.findOne({
         where: {
           phoneNo: createAuthenticationDto.phoneNo,
-          email: createAuthenticationDto.email
         }
       })
+      console.log(createAuthenticationDto)
       if(existingUser != null) {
         throw new HttpException("User already exist", HttpStatus.BAD_REQUEST) 
       }else{
@@ -44,10 +44,9 @@ export class AuthenticationService {
         }
       })
       if(existingUser == null ) {
-        throw new HttpException("phoneNo dosen't have an account", HttpStatus.BAD_REQUEST)
-        
+        throw new HttpException("PhoneNo dosen't have an account try creating an account instead", HttpStatus.BAD_REQUEST)
       }else if(!await bcrypt.compare(loginUserDto.password, existingUser.password)){
-        throw new HttpException("password is not correct", HttpStatus.BAD_REQUEST)
+        throw new HttpException("Incorrect Password ", HttpStatus.BAD_REQUEST)
       }else {
         const payload = {
           userId: existingUser.id,
@@ -65,7 +64,20 @@ export class AuthenticationService {
   }
 
   update(id: number, updateAuthenticationDto: UpdateAuthenticationDto) {
-    return `This action updates a #${id} authentication`;
+    try {
+      const existingUser = this.UserRepository.findOne({
+        where: {
+          id:id
+        }
+      })
+      if(existingUser != null) {
+        return this.UserRepository.update({id}, {...updateAuthenticationDto})
+      }else {
+        throw new HttpException("User not found", HttpStatus.BAD_REQUEST)
+      }
+    }catch(e) {
+      throw(e.message)
+    }
   }
 
   async remove(id: number) {

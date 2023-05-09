@@ -15,15 +15,6 @@ export class CreateAuthenticationDto {
     phoneNo: string
 
     @IsNotEmpty()
-    street: string
-
-    @IsNotEmpty()
-    city: string;
-
-    @IsNotEmpty()
-    country: string;
-
-    @IsNotEmpty()
     @MinLength(6)
     password: string;
 }

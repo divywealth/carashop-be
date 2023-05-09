@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Userproduct } from "src/userproduct/entities/userproduct.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Size } from "../enum/size";
 
 @Entity()
@@ -46,5 +47,8 @@ export class Product {
 
     @DeleteDateColumn()
     deletedAt: Date;
+
+    @OneToMany(() => Userproduct, (userproduct) => userproduct.product)
+    public userProduct: Userproduct
 
 }

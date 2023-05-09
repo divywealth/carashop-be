@@ -15,15 +15,6 @@ export class CreateUserDto {
     phoneNo: number
 
     @IsNotEmpty()
-    street: string
-
-    @IsNotEmpty()
-    city: string;
-
-    @IsNotEmpty()
-    country: string;
-
-    @IsNotEmpty()
     @MinLength(6)
     password: string;
 

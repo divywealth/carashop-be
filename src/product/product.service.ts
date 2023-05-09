@@ -24,25 +24,42 @@ export class ProductService {
   }
 
   async create(createProductDto: CreateProductDto){
-    /**const bucket = this.S3_bucket;
-    const body = createProductDto.img.buffer;
-    const contentType = createProductDto.img.mimetype;
-    const split = createProductDto.img.originalname.split('.');
-    const extention = split.pop();
-    const s3Key = format(new Date, "yyy-MM-dd-hh-mm-ss");
-    const fileName = `file${s3Key}.${extention}`
-    const params = {
-      Bucket: bucket!,
-      Key: fileName,
-      Body: body,
-      ACL: "public-read",
-      ContentType: contentType,
-      ContentDisposition:"inline"
-    };**/
-
     try {
-      //let s3Response = await this.s3.upload(params).promise();
-       //console.log(s3Response);
+      const existingProduct = await this.ProductRepository.findOne({
+        where: {
+          name: createProductDto.name
+        }
+      })
+      console.log(createProductDto)
+      if(existingProduct) {
+        return 'product already exist'
+      }else {
+        const bucket = this.S3_bucket;
+        const body = createProductDto.file.buffer;
+        const contentType = createProductDto.file.mimetype;
+        const split = createProductDto.file.originalname.split('.');
+        const extention = split.pop();
+        const s3Key = format(new Date, "yyy-MM-dd-hh-mm-ss");
+        const fileName = `file${s3Key}.${extention}`
+        const params = {
+          Bucket: bucket!,
+          Key: fileName,
+          Body: body,
+          ACL: "public-read",
+          ContentType: contentType,
+          ContentDisposition:"inline"
+        };
+        let s3Response = await this.s3.upload(params).promise();
+        const save = {
+          name: createProductDto.name,
+          designer: createProductDto.designer,
+          img: s3Response.Location,
+          price: createProductDto.price,
+          quantity: createProductDto.quantity,
+          size: createProductDto.size
+        };
+        return this.ProductRepository.save(save)
+      }
     }catch(e) {
       throw(e.message)
     }
@@ -56,12 +73,62 @@ export class ProductService {
     }
   }
 
-  findOne(id: number) {
-    
+  async findOne(id: number) {
+    try {
+      const existingProduct = await this.ProductRepository.findOne({
+        where: {
+          id:id
+        }
+      })
+      if(existingProduct != null) {
+        return existingProduct
+      }else {
+        throw new HttpException("Product wasn't found", HttpStatus.BAD_REQUEST)
+      }
+    }catch(e) {
+      throw(e.message)
+    }
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, updateProductDto: UpdateProductDto) {
+    try {
+      const existingProduct = await this.ProductRepository.findOne({
+        where: {
+          id:id
+        }
+      })
+      if(existingProduct != null) {
+        const bucket = this.S3_bucket;
+        const body = updateProductDto.file.buffer;
+        const contentType = updateProductDto.file.mimetype;
+        const split = updateProductDto.file.originalname.split('.');
+        const extention = split.pop();
+        const s3Key = format(new Date, "yyy-MM-dd-hh-mm-ss");
+        const fileName = `file${s3Key}.${extention}`
+        const params = {
+          Bucket: bucket!,
+          Key: fileName,
+          Body: body,
+          ACL: "public-read",
+          ContentType: contentType,
+          ContentDisposition:"inline"
+        };
+        let s3Response = await this.s3.upload(params).promise();
+        const save = {
+          name: updateProductDto.name,
+          designer: updateProductDto.designer,
+          img: s3Response.Location,
+          price: updateProductDto.price,
+          quantity: updateProductDto.quantity,
+          size: updateProductDto.size
+        };
+        return this.ProductRepository.update({id}, {...save})
+      }else {
+        throw new HttpException("Product was found", HttpStatus.BAD_REQUEST)
+      }
+    }catch(e) {
+      throw(e.message)
+    }
   }
 
   async remove(id: number) {
@@ -74,7 +141,7 @@ export class ProductService {
       if(existingProduct != null) {
         return this.ProductRepository.delete({id})
       }else {
-        throw new HttpException("User wasn't found", HttpStatus.BAD_REQUEST)
+        throw new HttpException("Product wasn't found", HttpStatus.BAD_REQUEST)
       }
     }catch(e) {
       throw(e.message)

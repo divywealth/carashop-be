@@ -9,7 +9,9 @@ export class CreateProductDto {
     @IsNotEmpty()
     designer: string;
 
+    file: Express.Multer.File 
     
+    @IsNotEmpty()
     img: string
 
     @IsNotEmpty()

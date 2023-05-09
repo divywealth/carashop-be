@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile  } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, UsePipes, ValidationPipe  } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -6,8 +6,6 @@ import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploadDto } from '../image/dto/file-upload-dto';
 import { Express } from 'express';
-import { ImageService } from '../image/image.service';
-import { CreateImageDto } from '../image/dto/create-image.dto';
 
 @Controller({
   path: 'product',
@@ -16,7 +14,6 @@ import { CreateImageDto } from '../image/dto/create-image.dto';
 export class ProductController {
   constructor(
     private readonly productService: ProductService,
-    private readonly imageService: ImageService
     ) {}
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
@@ -26,10 +23,17 @@ export class ProductController {
   })
 
   @Post()
-  create( @Body() createProductDto: CreateProductDto, createImageDto: CreateImageDto){
-    
-    const image = this.imageService.create(createImageDto)
-    console.log(createImageDto)
+  @UsePipes(ValidationPipe)
+  async create(@UploadedFile() file: Express.Multer.File, @Body() body){
+    const createProductDto: CreateProductDto = {
+      name: body.name,
+      designer: body.designer,
+      file: file,
+      img: body.img,
+      price: body.price,
+      quantity: body.quantity,
+      size: body.size
+    }
     return this.productService.create(createProductDto);
   }
 
@@ -44,7 +48,18 @@ export class ProductController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+  @UseInterceptors(FileInterceptor('file'))
+ async update(@UploadedFile() file: Express.Multer.File,@Param('id') id: string ,@Body() body) {
+   const updateProductDto: UpdateProductDto = {
+    name: body.name,
+    designer: body.designer,
+    file: file,
+    img: body.img,
+    price: body.price,
+    size: body.size,
+    quantity: body.quantity,
+   }
+   
     return this.productService.update(+id, updateProductDto);
   }
 

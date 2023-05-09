@@ -8,6 +8,6 @@ import { ImageService } from '../image/image.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Product])],
   controllers: [ProductController],
-  providers: [ProductService, ImageService]
+  providers: [ProductService]
 })
 export class ProductModule {}
