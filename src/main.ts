@@ -9,7 +9,6 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
-  console.log(process.env.DATABASE)
   await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
