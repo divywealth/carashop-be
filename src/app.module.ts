@@ -28,7 +28,7 @@ import { Userproduct } from './userproduct/entities/userproduct.entity';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE,
       entities: [User, Product, Userproduct],
-      synchronize: process.env.SYNCHRONIZE,
+      synchronize: JSON.parse(process.env.SYNCHRONIZE),
     }),
     UserModule, 
     ProductModule, 
