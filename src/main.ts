@@ -8,9 +8,7 @@ async function bootstrap() {
   app.enableCors({
     origin: 'http://localhost:8080',
     methods: ['POST', 'PUT', 'DELETE', 'GET'],
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-    credentials: true
+    
   });
   app.enableVersioning({
     type: VersioningType.URI,
