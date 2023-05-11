@@ -32,9 +32,8 @@ export class AuthenticationService {
       }
     }catch(e) {
       throw new HttpException({
-        status: HttpStatus.BAD_REQUEST,
         error: e.message
-      })
+      }, HttpStatus.BAD_REQUEST)
     }
   }
 
