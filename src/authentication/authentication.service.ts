@@ -34,9 +34,7 @@ export class AuthenticationService {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
         error: e.message
-      }, HttpStatus.FORBIDDEN, {
-      cause: error
-    })
+      })
     }
   }
 
