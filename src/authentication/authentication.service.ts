@@ -23,17 +23,12 @@ export class AuthenticationService {
         }
       })
       if(existingUser != null) {
-        throw new HttpException({
-          status: HttpStatus.BAD_REQUEST,
-          error: "User already exist"
-        }, HttpStatus.BAD_REQUEST)
+        throw new HttpException({message: "user already exist"}, HttpStatus.BAD_REQUEST)
       }else{
        return this.UserRepository.save(createAuthenticationDto)
       }
     }catch(e) {
-      throw new HttpException({
-        error: e.message
-      }, HttpStatus.BAD_REQUEST)
+      throw(e.message)
     }
   }
 
