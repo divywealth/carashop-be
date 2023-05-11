@@ -22,7 +22,6 @@ export class AuthenticationService {
           phoneNo: createAuthenticationDto.phoneNo,
         }
       })
-      console.log(createAuthenticationDto)
       if(existingUser != null) {
         throw("User alrady exist")
       }else{
