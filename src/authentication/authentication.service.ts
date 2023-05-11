@@ -31,7 +31,12 @@ export class AuthenticationService {
        return this.UserRepository.save(createAuthenticationDto)
       }
     }catch(e) {
-      throw(e.message)
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        error: e.message
+      }, HttpStatus.FORBIDDEN, {
+      cause: error
+    })
     }
   }
 
