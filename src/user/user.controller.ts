@@ -11,12 +11,20 @@ export class UserController {
   //Get All Users
   @Get()
   findAll() {
-    return this.userService.findAll();
+    try{
+      return this.userService.findAll();
+    }catch(error){
+      throw(error.message)
+    }
   }
 
   //Get just a User by id
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    try{
+      return this.userService.findOne(+id);
+    }catch(e) {
+      throw(e.message)
+    }
   }
 }

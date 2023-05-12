@@ -10,27 +10,19 @@ export class UserService {
   ){}
 
   findAll() {
-    try{
-      return this.UserRepository.find()
-    }catch(e) {
-      throw(e.message)
-    }
+    return this.UserRepository.find()
   }
 
-  findOne(id: number): Promise<User> {
-    try{
-      const existingUser = this.UserRepository.findOne({
+  async findOne(id: number): Promise<User> {
+      const existingUser = await this.UserRepository.findOne({
         where: {
           id:id
         }
       })
-      if(existingUser != null) {
-        return existingUser
+      if(existingUser == null) {
+        throw new HttpException("No user with such id", HttpStatus.BAD_REQUEST)
       }else {
-        throw new HttpException("user not found", HttpStatus.BAD_REQUEST)
+        return existingUser
       }
-    }catch(e) {
-      throw(e.message)
-    }
   }
 }

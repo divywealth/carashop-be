@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, NotFoundException, HttpStatus,} from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateAuthenticationDto } from './dto/create-authentication.dto';
 import { UpdateAuthenticationDto } from './dto/update-authentication.dto';
@@ -19,30 +19,46 @@ export class AuthenticationController {
   @Post()
   @UsePipes(ValidationPipe)
   async create(@Body() body) {
-    const saltOrRounds = 10;
-    const hashedPassword = await bcrypt.hash(body.password, saltOrRounds);
-    const createAuthenticationDto: CreateAuthenticationDto = {
-      firstName: body.firstName,
-      lastName: body.lastName,
-      email: body.email,
-      phoneNo: body.phoneNo,
-      password: hashedPassword
+    try {
+        const saltOrRounds = 10;
+      const hashedPassword = await bcrypt.hash(body.password, saltOrRounds);
+      const createAuthenticationDto: CreateAuthenticationDto = {
+        firstName: body.firstName,
+        lastName: body.lastName,
+        email: body.email,
+        phoneNo: body.phoneNo,
+        password: hashedPassword
+      }
+      return this.authenticationService.create(createAuthenticationDto);
+    }catch(e) {
+      throw(e.message)
     }
-    return this.authenticationService.create(createAuthenticationDto);
   }
 
   @Post('login')
   async loginUser(@Body() loginUserDto: LoginUserDto) {
-    return this.authenticationService.loginUser(loginUserDto)
+    try {
+      return this.authenticationService.loginUser(loginUserDto)
+    }catch(e) {
+      throw(e.message)
+    }
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAuthenticationDto: UpdateAuthenticationDto) {
-    return this.authenticationService.update(+id, updateAuthenticationDto);
+    try{
+      return this.authenticationService.update(+id, updateAuthenticationDto);
+    }catch(e) {
+      throw(e.message)
+    }
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.authenticationService.remove(+id);
+    try{
+      return this.authenticationService.remove(+id);
+    }catch(error) {
+      throw(error.message)
+    }
   }
 }

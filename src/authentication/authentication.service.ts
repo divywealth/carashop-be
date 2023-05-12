@@ -16,7 +16,6 @@ export class AuthenticationService {
   ){}
   
   async create(createAuthenticationDto: CreateAuthenticationDto) :Promise<User> {
-    try {
       const existingUser = await this.UserRepository.findOne({
         where: {
           phoneNo: createAuthenticationDto.phoneNo,
@@ -27,25 +26,21 @@ export class AuthenticationService {
       }else{
        return this.UserRepository.save(createAuthenticationDto)
       }
-    }catch(e) {
-      throw(e.message)
-    }
   }
 
   async loginUser(loginUserDto: LoginUserDto) {
-    try {
       if ((!loginUserDto.phoneNo) || !loginUserDto.password) {
         return  'email and password required'
       }
       const existingUser = await this.UserRepository.findOne({
         where: {
           phoneNo: loginUserDto.phoneNo,
-        }
+        },
       })
       if(existingUser == null ) {
         throw new HttpException("PhoneNo dosen't have an account try creating an account instead", HttpStatus.BAD_REQUEST)
       }else if(!await bcrypt.compare(loginUserDto.password, existingUser.password)){
-        throw new HttpException("Incorrect Password ", HttpStatus.BAD_REQUEST)
+        throw new HttpException("Incorrect Password", HttpStatus.BAD_REQUEST)
       }else {
         const payload = {
           userId: existingUser.id,
@@ -56,14 +51,9 @@ export class AuthenticationService {
           access_token: this.jwtService.sign({user: existingUser}),
         };
       }
-      
-    }catch(e) {
-      throw(e.message)
-    }
   }
 
   update(id: number, updateAuthenticationDto: UpdateAuthenticationDto) {
-    try {
       const existingUser = this.UserRepository.findOne({
         where: {
           id:id
@@ -74,25 +64,18 @@ export class AuthenticationService {
       }else {
         throw new HttpException("User not found", HttpStatus.BAD_REQUEST)
       }
-    }catch(e) {
-      throw(e.message)
-    }
   }
 
   async remove(id: number) {
-    try {
-      const existingUser = await this.UserRepository.findOne({
-        where: {
-          id:id
-        }
-      })
-      if(existingUser != null) {
-        return this.UserRepository.delete({id})
-      }else {
-        throw new HttpException("User wasn't found", HttpStatus.BAD_REQUEST)
+    const existingUser = await this.UserRepository.findOne({
+      where: {
+        id:id
       }
-    }catch(e) {
-      throw(e.message)
+    })
+    if(existingUser != null) {
+      return this.UserRepository.delete({id})
+    }else {
+      throw new HttpException("User wasn't found", HttpStatus.BAD_REQUEST)
     }
   }
 }

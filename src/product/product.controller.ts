@@ -25,46 +25,66 @@ export class ProductController {
   @Post()
   @UsePipes(ValidationPipe)
   async create(@UploadedFile() file: Express.Multer.File, @Body() body){
-    const createProductDto: CreateProductDto = {
-      name: body.name,
-      designer: body.designer,
-      file: file,
-      img: body.img,
-      price: body.price,
-      quantity: body.quantity,
-      size: body.size
+    try {
+      const createProductDto: CreateProductDto = {
+        name: body.name,
+        designer: body.designer,
+        file: file,
+        img: body.img,
+        price: body.price,
+        quantity: body.quantity,
+        size: body.size
+      }
+      return this.productService.create(createProductDto);
+    }catch(e) {
+      throw(e.message)
     }
-    return this.productService.create(createProductDto);
   }
 
   @Get()
   findAll() {
-    return this.productService.findAll();
+    try {
+      return this.productService.findAll();
+    }catch(e) {
+      throw(e.message)
+    }
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+    try{
+      return this.productService.findOne(+id);
+    }catch(e) {
+      throw(e.message)
+    }
   }
 
   @Patch(':id')
   @UseInterceptors(FileInterceptor('file'))
- async update(@UploadedFile() file: Express.Multer.File,@Param('id') id: string ,@Body() body) {
-   const updateProductDto: UpdateProductDto = {
-    name: body.name,
-    designer: body.designer,
-    file: file,
-    img: body.img,
-    price: body.price,
-    size: body.size,
-    quantity: body.quantity,
-   }
-   
-    return this.productService.update(+id, updateProductDto);
+  async update(@UploadedFile() file: Express.Multer.File, @Param('id') id: string, @Body() body) {
+    try {
+      const updateProductDto: UpdateProductDto = {
+        name: body.name,
+        designer: body.designer,
+        file: file,
+        img: body.img,
+        price: body.price,
+        size: body.size,
+        quantity: body.quantity,
+      }
+      console.log(updateProductDto)
+      return this.productService.update(+id, updateProductDto);
+    }catch(e) {
+      throw(e.message)
+    }
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
+    try{
+      return this.productService.remove(+id);
+    }catch(e) {
+      throw(e.message)
+    }
   }
 }

@@ -24,15 +24,13 @@ export class ProductService {
   }
 
   async create(createProductDto: CreateProductDto){
-    try {
       const existingProduct = await this.ProductRepository.findOne({
         where: {
           name: createProductDto.name
         }
       })
-      console.log(createProductDto)
       if(existingProduct) {
-        return 'product already exist'
+        throw new HttpException("product already exist", HttpStatus.BAD_REQUEST)
       }else {
         const bucket = this.S3_bucket;
         const body = createProductDto.file.buffer;
@@ -60,21 +58,13 @@ export class ProductService {
         };
         return this.ProductRepository.save(save)
       }
-    }catch(e) {
-      throw(e.message)
-    }
   }
 
   findAll() {
-    try{
-      return this.ProductRepository.find()
-    }catch(e) {
-      throw(e.message)
-    }
+    return this.ProductRepository.find()
   }
 
   async findOne(id: number) {
-    try {
       const existingProduct = await this.ProductRepository.findOne({
         where: {
           id:id
@@ -85,13 +75,9 @@ export class ProductService {
       }else {
         throw new HttpException("Product wasn't found", HttpStatus.BAD_REQUEST)
       }
-    }catch(e) {
-      throw(e.message)
-    }
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
-    try {
       const existingProduct = await this.ProductRepository.findOne({
         where: {
           id:id
@@ -122,29 +108,23 @@ export class ProductService {
           quantity: updateProductDto.quantity,
           size: updateProductDto.size
         };
+        console.log(save)
         return this.ProductRepository.update({id}, {...save})
       }else {
-        throw new HttpException("Product was found", HttpStatus.BAD_REQUEST)
+        throw new HttpException("Product was not found", HttpStatus.BAD_REQUEST)
       }
-    }catch(e) {
-      throw(e.message)
-    }
   }
 
   async remove(id: number) {
-    try {
-      const existingProduct = await this.ProductRepository.findOne({
-        where: {
-          id:id
-        }
-      })
-      if(existingProduct != null) {
-        return this.ProductRepository.delete({id})
-      }else {
-        throw new HttpException("Product wasn't found", HttpStatus.BAD_REQUEST)
+    const existingProduct = await this.ProductRepository.findOne({
+      where: {
+        id:id
       }
-    }catch(e) {
-      throw(e.message)
+    })
+    if(existingProduct != null) {
+      return this.ProductRepository.delete({id})
+    }else {
+      throw new HttpException("Product wasn't found", HttpStatus.BAD_REQUEST)
     }
   }
 }
