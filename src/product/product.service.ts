@@ -24,14 +24,6 @@ export class ProductService {
   }
 
   async create(createProductDto: CreateProductDto){
-      const existingProduct = await this.ProductRepository.findOne({
-        where: {
-          name: createProductDto.name
-        }
-      })
-      if(existingProduct) {
-        throw new HttpException("product already exist", HttpStatus.BAD_REQUEST)
-      }else {
         const bucket = this.S3_bucket;
         const body = createProductDto.file.buffer;
         const contentType = createProductDto.file.mimetype;
@@ -57,7 +49,6 @@ export class ProductService {
           size: createProductDto.size
         };
         return this.ProductRepository.save(save)
-      }
   }
 
   findAll() {
