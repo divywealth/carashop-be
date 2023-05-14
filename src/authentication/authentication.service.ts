@@ -27,7 +27,7 @@ export class AuthenticationService {
        const createdUser = this.UserRepository.save(createAuthenticationDto)
        return {
          user: createdUser,
-         access_token: this.jwtService,sign({user: createdUser})
+         access_token: this.jwtService,sign(createdUser)
        }
       }
   }
