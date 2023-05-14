@@ -24,7 +24,11 @@ export class AuthenticationService {
       if(existingUser != null) {
         throw new HttpException("user already exist", HttpStatus.BAD_REQUEST)
       }else{
-       return this.UserRepository.save(createAuthenticationDto)
+       const createdUser = this.UserRepository.save(createAuthenticationDto)
+       return {
+         user: createdUser,
+         access_token: this.jwtService,sign({user: createdUser})
+       }
       }
   }
 
