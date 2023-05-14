@@ -15,7 +15,7 @@ export class AuthenticationService {
     private jwtService: JwtService
   ){}
   
-  async create(createAuthenticationDto: CreateAuthenticationDto) :Promise<User> {
+  async create(createAuthenticationDto: CreateAuthenticationDto) {
       const existingUser = await this.UserRepository.findOne({
         where: {
           phoneNo: createAuthenticationDto.phoneNo,
