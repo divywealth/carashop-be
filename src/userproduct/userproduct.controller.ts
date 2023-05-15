@@ -18,19 +18,31 @@ export class UserproductController {
 
   @Post()
   async create(@Body() createUserproductDto: CreateUserproductDto ) {
-    const user = await this.userService.findOne(createUserproductDto.userId)
-    const product = await this.productService.findOne(createUserproductDto.productId)
-    return this.userproductService.create(createUserproductDto, user, product);
+    try {
+      const user = await this.userService.findOne(createUserproductDto.userId)
+      const product = await this.productService.findOne(createUserproductDto.productId)
+      return this.userproductService.create(createUserproductDto, user, product);
+    } catch (error) {
+      throw error
+    }
   }
 
   @Get()
   findAll() {
-    return this.userproductService.findAll();
+    try {
+      return this.userproductService.findAll();
+    } catch (error) {
+      throw error
+    }
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userproductService.findOne(+id);
+    try {
+      return this.userproductService.findOne(+id);
+    } catch (error) {
+      throw error
+    }
   }
 
   @Patch(':id')
@@ -40,6 +52,10 @@ export class UserproductController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userproductService.remove(+id);
+    try {
+      return this.userproductService.findOne(+id);
+    }catch(error) {
+      throw error
+    }
   }
 }

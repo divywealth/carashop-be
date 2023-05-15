@@ -23,12 +23,16 @@ export class UserproductService {
           product: product
         }
       })
+      console.log(existingUserProduct)
       if(existingUserProduct != null) {
-        return 'User chose product already'
+        throw new HttpException("User chosen product already", HttpStatus.BAD_REQUEST)
       }else {
-        
+        const saveUserProduct = await this.userproductRepository.save({
+          user: user,
+          product: product
+        })
+        return saveUserProduct
       }
-      console.log(createUserproductDto, user, product, existingUserProduct)
     }catch(e) {
       throw(e.message)
     }

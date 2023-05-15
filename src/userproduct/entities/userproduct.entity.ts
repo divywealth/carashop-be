@@ -8,8 +8,8 @@ export class Userproduct {
     id: number;
 
     @ManyToOne(() => User, (user) => user.userProduct)
-    public user: User[]
+    public user: User
 
     @ManyToOne(() => Product, (product) => product.userProduct)
-    public product: Product[]
+    public product: Product
 }

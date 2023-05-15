@@ -49,6 +49,6 @@ export class Product {
     deletedAt: Date;
 
     @OneToMany(() => Userproduct, (userproduct) => userproduct.product)
-    public userProduct: Userproduct
+    public userProduct: Userproduct[]
 
 }
