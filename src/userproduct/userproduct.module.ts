@@ -7,9 +7,17 @@ import { Userproduct } from './entities/userproduct.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { UserService } from 'src/user/user.service';
 import { ProductService } from 'src/product/product.service';
+import { JwtModule} from '@nestjs/jwt';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Userproduct, User, Product ])],
+  imports: [TypeOrmModule.forFeature([Userproduct, User, Product ]),
+  JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: {expiresIn: process.env.JWT_EXPIRES_IN}
+    }),
+
+  ],
+  
   controllers: [UserproductController],
   providers: [UserproductService, UserService, ProductService]
 })
