@@ -28,7 +28,7 @@ export class AuthenticationService {
        console.log(createdUser)
        return {
          user: createdUser,
-         access_token: this.jwtService.sign({user: createdUser}),
+         access_token: await this.jwtService.signAsync({user: createdUser}),
        };
       }
   }
