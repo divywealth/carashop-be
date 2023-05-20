@@ -28,7 +28,9 @@ export class AuthenticationService {
        console.log(createdUser)
        return {
          user: createdUser,
-         access_token: await this.jwtService.signAsync({user: createdUser}),
+         access_token: await this.jwtService.signAsync({user: createdUser}, {
+          expiresIn: process.env.JWT_EXPIRES_IN
+         }),
        };
       }
   }
