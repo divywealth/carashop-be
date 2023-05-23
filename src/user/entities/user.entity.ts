@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { Userproduct } from "src/userproduct/entities/userproduct.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -26,10 +27,15 @@ export class User {
     })
     phoneNo: string;
 
+    @Exclude()
     @Column({
         nullable: false
     })
     password: string;
+
+    constructor(partial: Partial<User>) {
+        Object.assign(this, partial);
+      }
 
     @CreateDateColumn()
     createdAt: Date;

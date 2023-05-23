@@ -33,7 +33,7 @@ export class UserproductController {
     }
   }
 
-  @Get()
+  @Get('/userproducts')
   findAll() {
     try {
       return this.userproductService.findAll();
