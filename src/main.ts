@@ -9,10 +9,10 @@ async function bootstrap() {
   };
   const app = await NestFactory.create(
     AppModule, 
-    { cors: true, httpsOptions }
+    { cors: true}
     );
   app.enableCors({
-    origin: ['http://localhost:8080', 'http://cara-shop.herokuapp.com', 'https://cara-shop.herokuapp.com'],
+    origin: ['http://localhost:8080', 'http://cara-shop.herokuapp.com'],
     methods: ['POST', 'PUT', 'DELETE', 'GET'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
