@@ -4,12 +4,9 @@ import { ConfigService } from '@nestjs/config';
 import { VersioningType } from '@nestjs/common'
 
 async function bootstrap() {
-  const httpsOptions = {
-    
-  };
   const app = await NestFactory.create(
     AppModule, 
-    { cors: true, httpsOptions}
+    { cors: true}
     );
   app.enableCors({
     origin: ['http://localhost:8080', 'http://cara-shop.herokuapp.com', 'https://cara-shop.herokuapp.com'],
