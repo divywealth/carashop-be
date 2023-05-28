@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { UserproductService } from './userproduct.service';
 import { CreateUserproductDto } from './dto/create-userproduct.dto';
 import { UpdateUserproductDto } from './dto/update-userproduct.dto';
@@ -6,79 +16,98 @@ import { UserService } from 'src/user/user.service';
 import { ProductService } from 'src/product/product.service';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { Userproduct } from './entities/userproduct.entity';
 
 @Controller({
-  path: 'userproduct',
-  version: '1'
+  version: '1',
 })
 export class UserproductController {
   constructor(
     private readonly userproductService: UserproductService,
     private readonly userService: UserService,
     private readonly productService: ProductService,
-    private jwtService: JwtService
-    ) {}
+    private jwtService: JwtService,
+  ) {}
 
-  @Post()
-  async create(@Body() createUserproductDto: CreateUserproductDto, @Req() request: Request) {
+  @Post('userproduct')
+  async create(
+    @Body() createUserproductDto: CreateUserproductDto,
+    @Req() request: Request,
+  ) {
     try {
       const token = request.headers.authorization.replace('Bearer ', '');
-      const decodedToken = await this.jwtService.verifyAsync(token, { secret: process.env.JWT_SECRET})
-      const userId = decodedToken.user.id
+      const decodedToken = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECRET,
+      });
+      const userId = decodedToken.user.id;
       const user = await this.userService.findOne(userId);
-      const product = await this.productService.findOne(createUserproductDto.productId);
-      return this.userproductService.create(createUserproductDto, user, product);
+      const product = await this.productService.findOne(
+        createUserproductDto.productId,
+      );
+      return this.userproductService.create(
+        createUserproductDto,
+        user,
+        product,
+      );
     } catch (error) {
-      throw error
+      throw error.message;
     }
   }
 
-  @Get('/userproducts')
-  findAll() {
+  @Get('userproducts')
+  findAll(): Promise<Userproduct[]> {
     try {
       return this.userproductService.findAll();
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  @Get(':id')
+  @Get('userproduct/:id')
   findOne(@Param('id') id: string) {
     try {
       return this.userproductService.findOne(+id);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   @Get('users/:userId/products')
-  async findUserProduct(@Param('userId') userId: string, @Req() request: Request) {
+  async findUserProduct(
+    @Param('userId') userId: string,
+    @Req() request: Request,
+  ) {
     try {
-    const token = request.headers.authorization.replace('Bearer ', '');
-    const decodedToken = await this.jwtService.verifyAsync(token, { secret: process.env.JWT_SECRET})
-    const newdecodeToken = decodedToken.user.id
-    const convertedUserId = newdecodeToken.toString();
-    userId = convertedUserId
-    const intUserId = parseInt(userId)
-    const user = await this.userService.findOne(intUserId);
-    this.userproductService.findUserProducts(user)
+      const token = request.headers.authorization.replace('Bearer ', '');
+      const decodedToken = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECRET,
+      });
+      const newdecodeToken = decodedToken.user.id;
+      const convertedUserId = newdecodeToken.toString();
+      userId = convertedUserId;
+      const intUserId = parseInt(userId);
+      const user = await this.userService.findOne(intUserId);
+      return this.userproductService.findUserProducts(user);
     } catch (error) {
-      console.log(error)
-      throw error
+      console.log(error);
+      throw error;
     }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserproductDto: UpdateUserproductDto) {
+  @Patch('userproduct/:id')
+  update(
+    @Param('id') id: string,
+    @Body() updateUserproductDto: UpdateUserproductDto,
+  ) {
     return this.userproductService.update(+id, updateUserproductDto);
   }
 
-  @Delete(':id')
+  @Delete('userproduct/:id')
   remove(@Param('id') id: string) {
     try {
-      return this.userproductService.findOne(+id);
-    }catch(error) {
-      throw error
+      return this.userproductService.remove(+id);
+    } catch (error) {
+      throw error;
     }
   }
 }

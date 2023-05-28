@@ -9,6 +9,10 @@ import { ImageModule } from './image/image.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { UserproductModule } from './userproduct/userproduct.module';
 import { Userproduct } from './userproduct/entities/userproduct.entity';
+import { OrderModule } from './order/order.module';
+import { Order } from './order/entities/order.entity';
+import { SubordeModule } from './suborde/suborde.module';
+import { Suborde } from './suborde/entities/suborde.entity';
 
 
 @Module({
@@ -21,19 +25,19 @@ import { Userproduct } from './userproduct/entities/userproduct.entity';
     }),
     //Connection to database details
     TypeOrmModule.forRoot({
-      type: "mysql",
+      type: 'mysql',
       host: process.env.DATABASE_HOST,
       port: parseInt(process.env.DATABASE_PORT),
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE,
-      entities: [User, Product, Userproduct],
+      entities: [User, Product, Userproduct, Order, Suborde],
       synchronize: JSON.parse(process.env.SYNCHRONIZE),
     }),
     UserModule, 
     ProductModule, 
     ImageModule, 
-    AuthenticationModule, UserproductModule
+    AuthenticationModule, UserproductModule, OrderModule, SubordeModule
   ],
   controllers: [],
   providers: [],

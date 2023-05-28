@@ -1,23 +1,19 @@
-import { IsNotEmpty } from "class-validator";
-import { Size } from "../enum/size";
-import {Express} from "express"
+import { IsNotEmpty } from 'class-validator';
+import { Size } from '../../userproduct/enum/size';
+import { Express } from 'express';
 
 export class CreateProductDto {
-    @IsNotEmpty()
-    name: string;
+  @IsNotEmpty()
+  name: string;
 
-    @IsNotEmpty()
-    designer: string;
+  @IsNotEmpty()
+  designer: string;
 
-    file: Express.Multer.File 
-    
-    @IsNotEmpty()
-    img: string
+  file: Express.Multer.File;
 
-    @IsNotEmpty()
-    price: string;
+  @IsNotEmpty()
+  img: string;
 
-    size: Size;
-
-    quantity: number;
+  @IsNotEmpty()
+  price: string;
 }

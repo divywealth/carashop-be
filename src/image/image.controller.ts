@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { ImageService } from './image.service';
 import { CreateImageDto } from './dto/create-image.dto';
 import { Express } from 'express';
@@ -9,23 +19,22 @@ import { FileUploadDto } from './dto/file-upload-dto';
 
 @Controller({
   path: 'image',
-  version: '1'
+  version: '1',
 })
 export class ImageController {
   constructor(private readonly imageService: ImageService) {}
-  
+
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'some description',
-    type: FileUploadDto
+    type: FileUploadDto,
   })
-  
   @Post()
   create(@UploadedFile() file: Express.Multer.File) {
     const createImageDto: CreateImageDto = {
-      file: file
-    }
+      file: file,
+    };
     return this.imageService.create(createImageDto);
   }
 
