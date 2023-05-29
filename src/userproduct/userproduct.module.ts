@@ -34,8 +34,12 @@ export class UserproductModule implements NestModule {
         method: RequestMethod.POST,
       },
       {
-        path: 'v1/userproduct/users/:userId/products',
+        path: 'v1/users/:userId/products',
         method: RequestMethod.GET,
+      },
+      {
+        path: 'v1/userproducts',
+        method: RequestMethod.DELETE
       },
     );
   }

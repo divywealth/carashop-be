@@ -102,12 +102,27 @@ export class UserproductController {
     return this.userproductService.update(+id, updateUserproductDto);
   }
 
-  @Delete('userproduct/:id')
-  remove(@Param('id') id: string) {
+  @Delete('userproducts')
+  async removeAll(@Req() request: Request) {
     try {
-      return this.userproductService.remove(+id);
+      const token = request.headers.authorization.replace('Bearer ', '');
+      const decodedToken = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECRET,
+      });
+      const userId = decodedToken.user.id;
+      const user = await this.userService.findOne(userId);
+      return this.userproductService.removeAll(user);
     } catch (error) {
-      throw error;
+      throw error.message;
+    }
+  }
+
+  @Delete('userproduct/:id')
+  removeOne(@Param('id') id: string) {
+    try {
+      this.userproductService.removeOne(+id);
+    } catch (error) {
+      throw error.message;
     }
   }
 }

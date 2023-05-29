@@ -47,7 +47,7 @@ export class UserproductService {
           user: user,
           product: product,
           size: createUserproductDto.size,
-          quantity: createUserproductDto.quantity
+          quantity: createUserproductDto.quantity,
         });
         return saveUserProduct;
       }
@@ -95,9 +95,9 @@ export class UserproductService {
         },
         relations: {
           product: true,
-          user: false
+          user: false,
         },
-        select: ['product']
+        select: ['product'],
       });
       console.log(existingUserProduct);
       if (existingUserProduct) {
@@ -115,7 +115,35 @@ export class UserproductService {
     return `This action updates a #${id} userproduct`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} userproduct`;
+  async removeAll(user: User) {
+    try {
+      const userproduct = await this.userproductRepository.find({
+        where: {
+          user: {
+            id: user.id,
+          },
+        },
+      });
+      if (userproduct) {
+        return this.userproductRepository.delete({ user });
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async removeOne(id: number) {
+    try {
+      const userproduct = await this.userproductRepository.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (userproduct) {
+        return this.userproductRepository.delete({ id });
+      }
+    } catch (error) {
+      throw error;
+    }
   }
 }
