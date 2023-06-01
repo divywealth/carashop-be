@@ -15,5 +15,5 @@ export class CreateProductDto {
   img: string;
 
   @IsNotEmpty()
-  price: string;
+  price: number;
 }

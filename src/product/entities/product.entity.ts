@@ -34,7 +34,7 @@ export class Product {
   @Column({
     nullable: false,
   })
-  price: string;
+  price: number;
 
   @CreateDateColumn()
   createdAt: Date;

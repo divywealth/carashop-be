@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { OrderService } from './order.service';
 import { OrderController } from './order.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,16 +14,33 @@ import { User } from 'src/user/entities/user.entity';
 import { Suborde } from 'src/suborde/entities/suborde.entity';
 import { ProductService } from 'src/product/product.service';
 import { Product } from 'src/product/entities/product.entity';
+import { SubordeService } from 'src/suborde/suborde.service';
+import { Userproduct } from '../userproduct/entities/userproduct.entity';
+import { UserproductService } from '../userproduct/userproduct.service';
+import { ValidateHeader } from '../userproduct/middlewares/validate-user-header.middleware';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Order, User, Suborde, Product]),
+    TypeOrmModule.forFeature([Order, User, Suborde, Product, Userproduct]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
   ],
   controllers: [OrderController],
-  providers: [OrderService, UserService, ProductService,],
+  providers: [
+    OrderService,
+    UserService,
+    ProductService,
+    SubordeService,
+    UserproductService,
+  ],
 })
-export class OrderModule {}
+export class OrderModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ValidateHeader).forRoutes({
+      path: 'v1/order',
+      method: RequestMethod.POST,
+    });
+  }
+}

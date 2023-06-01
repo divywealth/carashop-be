@@ -1,6 +1,6 @@
 export enum Status {
-    New = "New",
-    Processing = "Processing",
-    Ontransit = "Ontransit",
-    Delivered = "Delivered"
+  New = 'New',
+  Processing = 'Processing',
+  Ontransit = 'Ontransit',
+  Delivered = 'Delivered',
 }

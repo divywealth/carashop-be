@@ -9,7 +9,7 @@ export class SubordeController {
 
   @Post()
   create(@Body() createSubordeDto: CreateSubordeDto) {
-    return this.subordeService.create(createSubordeDto);
+    //return this.subordeService.create(createSubordeDto);
   }
 
   @Get()

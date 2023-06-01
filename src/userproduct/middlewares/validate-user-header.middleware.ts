@@ -4,7 +4,6 @@ import { NextFunction, Request, Response } from 'express';
 @Injectable()
 export class ValidateHeader implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    console.log('hi i am validate');
     const { authorization } = req.headers;
     if (!authorization) {
       return res

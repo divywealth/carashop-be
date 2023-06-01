@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/product/entities/product.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreateUserproductDto } from './dto/create-userproduct.dto';
 import { UpdateUserproductDto } from './dto/update-userproduct.dto';
 import { Userproduct } from './entities/userproduct.entity';
@@ -36,7 +36,6 @@ export class UserproductService {
           },
         },
       });
-      console.log(existingUserProduct, user, product);
       if (existingUserProduct != null) {
         throw new HttpException(
           'User chosen product already',
@@ -85,7 +84,7 @@ export class UserproductService {
     }
   }
 
-  async findUserProducts(user: User) {
+  async findUserProducts(user: User): Promise<Userproduct[]> {
     try {
       const existingUserProduct = await this.userproductRepository.find({
         where: {
@@ -106,7 +105,6 @@ export class UserproductService {
         throw new HttpException('user not found', HttpStatus.BAD_REQUEST);
       }
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }
@@ -115,9 +113,9 @@ export class UserproductService {
     return `This action updates a #${id} userproduct`;
   }
 
-  async removeAll(user: User) {
+  async removeAll(user: User): Promise<DeleteResult> {
     try {
-      const userproduct = await this.userproductRepository.find({
+      const userproduct: Userproduct[] = await this.userproductRepository.find({
         where: {
           user: {
             id: user.id,
@@ -132,7 +130,7 @@ export class UserproductService {
     }
   }
 
-  async removeOne(id: number) {
+  async removeOne(id: number): Promise<DeleteResult> {
     try {
       const userproduct = await this.userproductRepository.findOne({
         where: {

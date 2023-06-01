@@ -39,7 +39,7 @@ export class UserproductModule implements NestModule {
       },
       {
         path: 'v1/userproducts',
-        method: RequestMethod.DELETE
+        method: RequestMethod.DELETE,
       },
     );
   }

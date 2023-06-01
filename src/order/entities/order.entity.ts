@@ -23,7 +23,7 @@ export class Order {
   @Column({
     type: 'enum',
     enum: Status,
-    default: "New"
+    default: 'New',
   })
   status: Status;
 
