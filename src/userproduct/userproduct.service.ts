@@ -139,6 +139,11 @@ export class UserproductService {
       });
       if (userproduct) {
         return this.userproductRepository.delete({ id });
+      } else {
+        throw new HttpException(
+          'user product not found',
+          HttpStatus.BAD_REQUEST,
+        );
       }
     } catch (error) {
       throw error;
