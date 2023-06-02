@@ -35,7 +35,10 @@ export class OrderController {
   ) {}
 
   @Post('order')
-  async create(@Body() body, @Req() request: Request) {
+  async create(
+    @Body() createOrderDto: CreateOrderDto,
+    @Req() request: Request,
+  ) {
     try {
       const token = request.headers.authorization.replace('Bearer ', '');
       const decodedToken = await this.jwtService.verifyAsync(token, {
@@ -43,18 +46,8 @@ export class OrderController {
       });
       const userId = decodedToken.user.id;
       const user = await this.userService.findOne(userId);
-      const createOrderDto: CreateOrderDto = {
-        userId: body.userId,
-        status: body.status,
-        suborder: {
-          orderId: body.suborder.orderId,
-          productId: body.suborder.productId,
-          quantity: body.suborder.quantity,
-          amount: body.suborder.amount,
-        },
-      };
       const existingUserProducts: Userproduct[] = await this.userProductService.findUserProducts(user);
-      if (existingUserProducts == null) {
+      if (existingUserProducts.length == 0) {
         throw new HttpException(
           "user doesn't have any product",
           HttpStatus.BAD_REQUEST,
@@ -68,7 +61,6 @@ export class OrderController {
             existingUserProducts[i].product.id,
           );
           const savedSubOrder = this.suborderService.create(
-            createOrderDto.suborder,
             order,
             product,
             existingUserProducts[i].quantity,
@@ -78,7 +70,7 @@ export class OrderController {
         return savedOrder;
       }
     } catch (error) {
-      throw error.message;
+      throw error;
     }
   }
 
