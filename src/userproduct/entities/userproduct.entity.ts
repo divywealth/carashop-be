@@ -18,11 +18,13 @@ export class Userproduct {
     type: 'enum',
     enum: Size,
     nullable: false,
+    select: false,
   })
   size: Size;
 
   @Column({
     nullable: false,
+    select: false,
   })
   quantity: number;
 }
