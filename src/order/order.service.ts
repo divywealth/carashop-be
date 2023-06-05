@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
 import { Repository } from 'typeorm';
 import { Suborde } from 'src/suborde/entities/suborde.entity';
+import { Address } from '../address/entities/address.entity';
 
 @Injectable()
 export class OrderService {
@@ -15,11 +16,12 @@ export class OrderService {
     @InjectRepository(Suborde)
     private readonly subordeRepository: Repository<Suborde>,
   ) {}
-  create(createOrderDto: CreateOrderDto, user: User) {
+  create(createOrderDto: CreateOrderDto, user: User, address: Address) {
     try {
       return this.orderRepository.save({
         user: user,
         status: createOrderDto.status,
+        address: address,
       });
     } catch (error) {
       throw error;

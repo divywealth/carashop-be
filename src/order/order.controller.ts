@@ -20,6 +20,7 @@ import { ProductService } from 'src/product/product.service';
 import { SubordeService } from 'src/suborde/suborde.service';
 import { UserproductService } from '../userproduct/userproduct.service';
 import { Userproduct } from '../userproduct/entities/userproduct.entity';
+import { AddressService } from '../address/address.service';
 
 @Controller({
   version: '1',
@@ -32,6 +33,7 @@ export class OrderController {
     private readonly productService: ProductService,
     private readonly suborderService: SubordeService,
     private readonly userProductService: UserproductService,
+    private readonly addressService: AddressService,
   ) {}
 
   @Post('order')
@@ -46,7 +48,8 @@ export class OrderController {
       });
       const userId = decodedToken.user.id;
       const user = await this.userService.findOne(userId);
-      const existingUserProducts: Userproduct[] = await this.userProductService.findUserProducts(user);
+      const existingUserProducts: Userproduct[] =
+        await this.userProductService.findUserProducts(user);
       if (existingUserProducts.length == 0) {
         throw new HttpException(
           "user doesn't have any product",
@@ -54,7 +57,15 @@ export class OrderController {
         );
       } else {
         const deleteUserProduct = await this.userProductService.removeAll(user);
-        const savedOrder = await this.orderService.create(createOrderDto, user);
+        const savedAddress = await this.addressService.create(
+          createOrderDto.address,
+        );
+        const address = await this.addressService.findOne(savedAddress.id);
+        const savedOrder = await this.orderService.create(
+          createOrderDto,
+          user,
+          address,
+        );
         const order = await this.orderService.findOne(savedOrder.id);
         for (let i = 0; i < existingUserProducts.length; i++) {
           const product = await this.productService.findOne(

@@ -4,13 +4,16 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Status } from '../Enums/status';
 import { Suborde } from 'src/suborde/entities/suborde.entity';
+import { Address } from '../../address/entities/address.entity';
 
 @Entity()
 export class Order {
@@ -29,6 +32,10 @@ export class Order {
 
   @OneToMany(() => Suborde, (suborde) => suborde.order)
   suborder: Suborde[];
+
+  @OneToOne(() => Address)
+  @JoinColumn()
+  address: Address;
 
   @CreateDateColumn()
   createdAt: Date;

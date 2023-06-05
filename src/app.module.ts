@@ -13,7 +13,8 @@ import { OrderModule } from './order/order.module';
 import { Order } from './order/entities/order.entity';
 import { SubordeModule } from './suborde/suborde.module';
 import { Suborde } from './suborde/entities/suborde.entity';
-
+import { AddressModule } from './address/address.module';
+import { Address } from './address/entities/address.entity';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { Suborde } from './suborde/entities/suborde.entity';
     ConfigModule.forRoot({
       isGlobal: true,
       //envFilePath: ['./env/.env.production','./env/.production.env' ]
-      envFilePath: `./env/.env.${process.env.NODE_ENV}`
+      envFilePath: `./env/.env.${process.env.NODE_ENV}`,
     }),
     //Connection to database details
     TypeOrmModule.forRoot({
@@ -31,13 +32,17 @@ import { Suborde } from './suborde/entities/suborde.entity';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE,
-      entities: [User, Product, Userproduct, Order, Suborde],
+      entities: [User, Product, Userproduct, Order, Suborde, Address],
       synchronize: JSON.parse(process.env.SYNCHRONIZE),
     }),
-    UserModule, 
-    ProductModule, 
-    ImageModule, 
-    AuthenticationModule, UserproductModule, OrderModule, SubordeModule
+    UserModule,
+    ProductModule,
+    ImageModule,
+    AuthenticationModule,
+    UserproductModule,
+    OrderModule,
+    SubordeModule,
+    AddressModule,
   ],
   controllers: [],
   providers: [],

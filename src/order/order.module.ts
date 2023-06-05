@@ -18,10 +18,19 @@ import { SubordeService } from 'src/suborde/suborde.service';
 import { Userproduct } from '../userproduct/entities/userproduct.entity';
 import { UserproductService } from '../userproduct/userproduct.service';
 import { ValidateHeader } from '../userproduct/middlewares/validate-user-header.middleware';
+import { Address } from '../address/entities/address.entity';
+import { AddressService } from '../address/address.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Order, User, Suborde, Product, Userproduct]),
+    TypeOrmModule.forFeature([
+      Order,
+      User,
+      Suborde,
+      Product,
+      Userproduct,
+      Address,
+    ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
@@ -34,6 +43,7 @@ import { ValidateHeader } from '../userproduct/middlewares/validate-user-header.
     ProductService,
     SubordeService,
     UserproductService,
+    AddressService,
   ],
 })
 export class OrderModule implements NestModule {
