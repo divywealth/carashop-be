@@ -71,13 +71,14 @@ export class OrderController {
           const product = await this.productService.findOne(
             existingUserProducts[i].product.id,
           );
-          const savedSubOrder = this.suborderService.create(
+          const savedSubOrder = await this.suborderService.create(
             order,
             product,
             existingUserProducts[i].quantity,
             product.price,
           );
         }
+        console.log(savedOrder.id);
         const savedSubOrderProducts = await this.suborderService.findAllOrderProducts(
           savedOrder.id,
         );

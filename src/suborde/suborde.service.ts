@@ -36,6 +36,7 @@ export class SubordeService {
 
   async findAllOrderProducts(orderId: number) {
     try {
+      console.log(orderId);
       const existingOrderProducts = await this.subordeRepository.find({
         where: {
           order: {
