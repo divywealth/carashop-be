@@ -78,7 +78,7 @@ export class OrderController {
             product.price,
           );
         }
-        const savedSubOrderProducts = this.suborderService.findAllOrderProducts(
+        const savedSubOrderProducts = await this.suborderService.findAllOrderProducts(
           savedOrder.id,
         );
         return savedSubOrderProducts;
