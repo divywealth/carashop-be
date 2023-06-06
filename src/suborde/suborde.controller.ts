@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SubordeService } from './suborde.service';
 import { CreateSubordeDto } from './dto/create-suborde.dto';
 import { UpdateSubordeDto } from './dto/update-suborde.dto';
@@ -31,4 +39,6 @@ export class SubordeController {
   remove(@Param('id') id: string) {
     return this.subordeService.remove(+id);
   }
+
+
 }

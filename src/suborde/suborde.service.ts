@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateSubordeDto } from './dto/create-suborde.dto';
 import { UpdateSubordeDto } from './dto/update-suborde.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,11 +11,11 @@ import { Product } from 'src/product/entities/product.entity';
 export class SubordeService {
   constructor(
     @InjectRepository(Suborde)
-    private readonly suborde: Repository<Suborde>,
+    private readonly subordeRepository: Repository<Suborde>,
   ) {}
   create(order: Order, product: Product, quantity: number, price: number) {
     try {
-      return this.suborde.save({
+      return this.subordeRepository.save({
         order: order,
         product: product,
         quantity: quantity,
@@ -32,6 +32,29 @@ export class SubordeService {
 
   findOne(id: number) {
     return `This action returns a #${id} suborde`;
+  }
+
+  findAllOrderProducts(orderId: number) {
+    try {
+      const existingOrderProducts = this.subordeRepository.find({
+        where: {
+          order: {
+            id: orderId,
+          },
+        },
+        relations: ['product', 'order'],
+      });
+      if (existingOrderProducts) {
+        return existingOrderProducts;
+      } else {
+        throw new HttpException(
+          "orderId dosen't exist",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    } catch (error) {
+      throw error;
+    }
   }
 
   update(id: number, updateSubordeDto: UpdateSubordeDto) {
