@@ -76,12 +76,12 @@ export class OrderController {
             product,
             existingUserProducts[i].quantity,
             product.price,
+            existingUserProducts[i].size,
           );
         }
         console.log(savedOrder.id);
-        const savedSubOrderProducts = await this.suborderService.findAllOrderProducts(
-          savedOrder.id,
-        );
+        const savedSubOrderProducts =
+          await this.suborderService.findAllOrderProducts(savedOrder.id);
         return savedSubOrderProducts;
       }
     } catch (error) {

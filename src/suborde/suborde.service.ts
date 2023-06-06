@@ -13,13 +13,20 @@ export class SubordeService {
     @InjectRepository(Suborde)
     private readonly subordeRepository: Repository<Suborde>,
   ) {}
-  create(order: Order, product: Product, quantity: number, price: number) {
+  create(
+    order: Order,
+    product: Product,
+    quantity: number,
+    price: number,
+    size: string,
+  ) {
     try {
       return this.subordeRepository.save({
         order: order,
         product: product,
         quantity: quantity,
         amount: price * quantity,
+        size: size,
       });
     } catch (error) {
       throw error;

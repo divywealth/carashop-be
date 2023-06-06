@@ -21,6 +21,9 @@ export class Suborde {
   @Column()
   amount: number;
 
+  @Column()
+  size: string;
+
   @ManyToOne(() => Order, (order) => order.suborder)
   order: Order;
 
