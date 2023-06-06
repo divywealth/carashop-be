@@ -67,6 +67,7 @@ export class OrderController {
           address,
         );
         const order = await this.orderService.findOne(savedOrder.id);
+        let newsavedSubOrder = null;
         for (let i = 0; i < existingUserProducts.length; i++) {
           const product = await this.productService.findOne(
             existingUserProducts[i].product.id,
@@ -77,8 +78,12 @@ export class OrderController {
             existingUserProducts[i].quantity,
             product.price,
           );
+          newsavedSubOrder = savedSubOrder;
         }
-        return savedOrder;
+        return {
+          savedOrder,
+          newsavedSubOrder,
+        };
       }
     } catch (error) {
       throw error;
