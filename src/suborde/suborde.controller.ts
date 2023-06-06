@@ -11,7 +11,9 @@ import { SubordeService } from './suborde.service';
 import { CreateSubordeDto } from './dto/create-suborde.dto';
 import { UpdateSubordeDto } from './dto/update-suborde.dto';
 
-@Controller('suborde')
+@Controller({
+  version: '1',
+})
 export class SubordeController {
   constructor(private readonly subordeService: SubordeService) {}
 
@@ -40,5 +42,8 @@ export class SubordeController {
     return this.subordeService.remove(+id);
   }
 
-
+  @Get('order/products/:orderId')
+  getOrderProducts(@Param('orderId') orderId: string) {
+    return this.subordeService.findAllOrderProducts(+orderId);
+  }
 }
