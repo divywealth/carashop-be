@@ -13,16 +13,24 @@ export class Address {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    nullable: false,
+  })
   street: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+  })
   city: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+  })
   country: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+  })
   phoneNo: string;
 
   @CreateDateColumn()
