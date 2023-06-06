@@ -34,9 +34,9 @@ export class SubordeService {
     return `This action returns a #${id} suborde`;
   }
 
-  findAllOrderProducts(orderId: number) {
+  async findAllOrderProducts(orderId: number) {
     try {
-      const existingOrderProducts = this.subordeRepository.find({
+      const existingOrderProducts = await this.subordeRepository.find({
         where: {
           order: {
             id: orderId,
