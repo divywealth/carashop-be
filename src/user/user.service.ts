@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+import { BadRequest } from '../Utill/responseService';
 
 @Injectable()
 export class UserService {
@@ -25,7 +26,7 @@ export class UserService {
       },
     });
     if (existingUser == null) {
-      throw new HttpException('No user with such id', HttpStatus.BAD_REQUEST);
+      throw BadRequest('No user with such id');
     } else {
       return existingUser;
     }

@@ -15,6 +15,8 @@ import { SubordeModule } from './suborde/suborde.module';
 import { Suborde } from './suborde/entities/suborde.entity';
 import { AddressModule } from './address/address.module';
 import { Address } from './address/entities/address.entity';
+import { VerificationModule } from './verification/verification.module';
+import { Verification } from './verification/entities/verification.entity';
 
 @Module({
   imports: [
@@ -32,7 +34,15 @@ import { Address } from './address/entities/address.entity';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE,
-      entities: [User, Product, Userproduct, Order, Suborde, Address],
+      entities: [
+        User,
+        Product,
+        Userproduct,
+        Order,
+        Suborde,
+        Address,
+        Verification,
+      ],
       synchronize: JSON.parse(process.env.SYNCHRONIZE),
     }),
     UserModule,
@@ -43,6 +53,7 @@ import { Address } from './address/entities/address.entity';
     OrderModule,
     SubordeModule,
     AddressModule,
+    VerificationModule,
   ],
   controllers: [],
   providers: [],

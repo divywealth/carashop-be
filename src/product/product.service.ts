@@ -7,6 +7,7 @@ import { Product } from './entities/product.entity';
 import { ConfigService } from '@nestjs/config';
 import * as AWS from 'aws-sdk';
 import { format } from 'date-fns';
+import { BadRequest } from '../Utill/responseService';
 
 @Injectable()
 export class ProductService {
@@ -51,19 +52,27 @@ export class ProductService {
   }
 
   findAll() {
-    return this.ProductRepository.find();
+    try {
+      return this.ProductRepository.find();
+    } catch (error) {
+      throw error;
+    }
   }
 
   async findOne(id: number) {
-    const existingProduct = await this.ProductRepository.findOne({
-      where: {
-        id: id,
-      },
-    });
-    if (existingProduct != null) {
-      return existingProduct;
-    } else {
-      throw new HttpException("Product wasn't found", HttpStatus.BAD_REQUEST);
+    try {
+      const existingProduct = await this.ProductRepository.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (existingProduct != null) {
+        return existingProduct;
+      } else {
+        throw BadRequest("Product wasn't found");
+      }
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -99,7 +108,7 @@ export class ProductService {
       console.log(save);
       return this.ProductRepository.update({ id }, { ...save });
     } else {
-      throw new HttpException('Product was not found', HttpStatus.BAD_REQUEST);
+      throw BadRequest('Product was not found');
     }
   }
 
@@ -112,7 +121,7 @@ export class ProductService {
     if (existingProduct != null) {
       return this.ProductRepository.delete({ id });
     } else {
-      throw new HttpException("Product wasn't found", HttpStatus.BAD_REQUEST);
+      throw BadRequest("Product wasn't found");
     }
   }
 }

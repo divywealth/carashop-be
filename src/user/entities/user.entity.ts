@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Verification } from '../../verification/entities/verification.entity';
 
 @Entity()
 export class User {
@@ -54,4 +55,7 @@ export class User {
 
   @OneToMany(() => Order, (order) => order.user)
   order: Order[];
+
+  @OneToMany(() => Verification, (verification) => verification.user)
+  verification: Verification[];
 }

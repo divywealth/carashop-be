@@ -7,6 +7,7 @@ import { CreateUserproductDto } from './dto/create-userproduct.dto';
 import { UpdateUserproductDto } from './dto/update-userproduct.dto';
 import { Userproduct } from './entities/userproduct.entity';
 import { JwtService } from '@nestjs/jwt';
+import {BadRequest} from "../Utill/responseService";
 
 @Injectable()
 export class UserproductService {
@@ -37,10 +38,7 @@ export class UserproductService {
         },
       });
       if (existingUserProduct != null) {
-        throw new HttpException(
-          'User chosen product already',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw BadRequest('User chosen product already');
       } else {
         const saveUserProduct = await this.userproductRepository.save({
           user: user,
@@ -74,10 +72,7 @@ export class UserproductService {
       if (existingUserProduct) {
         return existingUserProduct;
       } else {
-        throw new HttpException(
-          'UserProduct not found',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw BadRequest('UserProduct not found');
       }
     } catch (e) {
       throw e.message;
@@ -102,7 +97,7 @@ export class UserproductService {
       if (existingUserProduct) {
         return existingUserProduct;
       } else {
-        throw new HttpException('user not found', HttpStatus.BAD_REQUEST);
+        throw BadRequest('user not found');
       }
     } catch (error) {
       throw error;
@@ -123,8 +118,9 @@ export class UserproductService {
         },
       });
       if (userproduct) {
-        return this.userproductRepository.delete({ user });
+        return BadRequest("User dosen't have a product");
       }
+      return this.userproductRepository.delete({ user });
     } catch (error) {
       throw error;
     }
@@ -140,10 +136,7 @@ export class UserproductService {
       if (userproduct) {
         return this.userproductRepository.delete({ id });
       } else {
-        throw new HttpException(
-          'user product not found',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw BadRequest('user product not found');
       }
     } catch (error) {
       throw error;

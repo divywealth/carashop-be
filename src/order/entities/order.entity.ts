@@ -20,7 +20,7 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.order)
+  @ManyToOne(() => User, (user) => user.order, { onDelete: 'CASCADE', })
   user: User;
 
   @Column({

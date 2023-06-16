@@ -8,10 +8,12 @@ export class Userproduct {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.userProduct)
+  @ManyToOne(() => User, (user) => user.userProduct, { onDelete: 'CASCADE' })
   public user: User;
 
-  @ManyToOne(() => Product, (product) => product.userProduct)
+  @ManyToOne(() => Product, (product) => product.userProduct, {
+    onDelete: 'CASCADE',
+  })
   public product: Product;
 
   @Column({
