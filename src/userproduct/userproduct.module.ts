@@ -20,7 +20,7 @@ import { ValidateHeader } from './middlewares/validate-user-header.middleware';
     TypeOrmModule.forFeature([Userproduct, User, Product]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '30m' },
+      signOptions: { expiresIn: '1d' },
     }),
   ],
   controllers: [UserproductController],
