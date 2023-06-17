@@ -89,7 +89,6 @@ export class UserproductController {
       const user = await this.userService.findOne(intUserId);
       return this.userproductService.findUserProducts(user);
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }

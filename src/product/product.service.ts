@@ -105,7 +105,6 @@ export class ProductService {
         img: s3Response.Location,
         price: updateProductDto.price,
       };
-      console.log(save);
       return this.ProductRepository.update({ id }, { ...save });
     } else {
       throw BadRequest('Product was not found');

@@ -79,7 +79,6 @@ export class OrderController {
             existingUserProducts[i].size,
           );
         }
-        console.log(savedOrder.id);
         const savedSubOrderProducts =
           await this.suborderService.findAllOrderProducts(savedOrder.id);
         return savedSubOrderProducts;

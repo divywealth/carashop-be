@@ -93,7 +93,6 @@ export class UserproductService {
         },
         select: ['product'],
       });
-      console.log(existingUserProduct);
       if (existingUserProduct) {
         return existingUserProduct;
       } else {

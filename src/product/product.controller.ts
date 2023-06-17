@@ -81,7 +81,6 @@ export class ProductController {
         img: body.img,
         price: body.price,
       };
-      console.log(updateProductDto);
       return this.productService.update(+id, updateProductDto);
     } catch (e) {
       throw e.message;

@@ -52,7 +52,6 @@ export class SubordeService {
         },
         relations: ['product', 'order'],
       });
-      console.log(existingOrderProducts);
       if (existingOrderProducts) {
         return existingOrderProducts;
       } else {

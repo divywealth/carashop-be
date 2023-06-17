@@ -10,7 +10,6 @@ export class EmailNotificationService {
   async sendNotification(mail: SendGrid.MailDataRequired) {
     try {
       const transport = await SendGrid.send(mail);
-      console.log(`Email successfully dispatched to ${mail.to}`);
       return transport;
     } catch (error) {
       throw error;
