@@ -31,9 +31,9 @@ export class VerificationService {
     return `This action updates a #${id} verification`;
   }
 
-  removeUsersVerification(user: User) {
+  async removeUsersVerification(user: User) {
     try {
-      const existingUserVerification = this.verificationRepository.find({
+      const existingUserVerification = await this.verificationRepository.find({
         where: {
           user: {
             id: user.id,

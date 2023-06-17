@@ -20,7 +20,7 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.order, { onDelete: 'CASCADE', })
+  @ManyToOne(() => User, (user) => user.order, { onDelete: 'CASCADE' })
   user: User;
 
   @Column({
@@ -30,7 +30,7 @@ export class Order {
   })
   status: Status;
 
-  @OneToMany(() => Suborde, (suborde) => suborde.order)
+  @OneToMany(() => Suborde, (suborde) => suborde.order, { onDelete: 'CASCADE' })
   suborder: Suborde[];
 
   @OneToOne(() => Address)

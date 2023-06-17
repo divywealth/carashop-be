@@ -49,5 +49,5 @@ export class Product {
   public userProduct: Userproduct[];
 
   @OneToMany(() => Suborde, (suborde) => suborde.product)
-  suborder: Suborde
+  suborder: Suborde[];
 }

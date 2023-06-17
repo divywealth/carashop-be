@@ -83,9 +83,9 @@ export class AuthenticationService {
         return BadRequest('No account with this email');
       }
       const clearUserOldVerificationCode =
-        this.verificationService.removeUsersVerification(existingUser);
+        await this.verificationService.removeUsersVerification(existingUser);
       const verificationCode = randomNumber(6);
-      const verification = this.verificationService.create(
+      const verification = await this.verificationService.create(
         existingUser,
         verificationCode,
       );
@@ -106,7 +106,7 @@ export class AuthenticationService {
 
   async verifyPasswordCode(resetPasswordDto: ResetPasswordDto) {
     try {
-      const verify = this.verificationRepository.findOne({
+      const verify = await this.verificationRepository.findOne({
         where: {
           user: {
             email: resetPasswordDto.email,
