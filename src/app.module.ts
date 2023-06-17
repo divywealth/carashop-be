@@ -17,6 +17,7 @@ import { AddressModule } from './address/address.module';
 import { Address } from './address/entities/address.entity';
 import { VerificationModule } from './verification/verification.module';
 import { Verification } from './verification/entities/verification.entity';
+import {EmailNotificationService} from "./Utill/sendGridService";
 
 @Module({
   imports: [
@@ -56,6 +57,6 @@ import { Verification } from './verification/entities/verification.entity';
     VerificationModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [EmailNotificationService],
 })
 export class AppModule {}
