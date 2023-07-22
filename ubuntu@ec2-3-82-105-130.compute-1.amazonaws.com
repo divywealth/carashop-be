@@ -1,0 +1,13 @@
+DATABASE_HOST = "carashopdb.cbdjg2up99vp.us-east-1.rds.amazonaws.com"
+DATABASE_USER = "carashop_user"
+DATABASE_PASSWORD = "fordwinwam"
+DATABASE = "carashopdb"
+DATABASE_PORT = "3306"
+JWT_SECRET = "yeatel"
+JWT_EXPIRES_IN = "1d"
+SYNCHRONIZE = false
+
+AWS_S3_ACCESS_KEY = "AKIAQSGKWKHYJLFHO6IZ"
+AWS_S3_SECRET_KEY = "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"
+AWS_S3_BUCKET= "cara-shop"
+SEND_GRID_KEY = "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"
