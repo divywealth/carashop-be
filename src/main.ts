@@ -9,7 +9,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:8080',
-      'http://54.173.189.226/',
+      'http://54.173.189.226',
       'http://cara-shop.herokuapp.com',
       'https://cara-shop.herokuapp.com',
     ],
