@@ -9,7 +9,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:8080',
-      'https://cara-shop-gamma.vercel.app/',
+      'https://cara-shop-gamma.vercel.app',
     ],
     methods: ['POST', 'PUT', 'DELETE', 'GET'],
     allowedHeaders: ['Content-Type', 'Authorization'],
