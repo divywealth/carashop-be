@@ -83,29 +83,29 @@ export class ProductService {
       },
     });
     if (existingProduct != null) {
-      const bucket = this.S3_bucket;
-      const body = updateProductDto.file.buffer;
-      const contentType = updateProductDto.file.mimetype;
-      const split = updateProductDto.file.originalname.split('.');
-      const extention = split.pop();
-      const s3Key = format(new Date(), 'yyy-MM-dd-hh-mm-ss');
-      const fileName = `file${s3Key}.${extention}`;
-      const params = {
-        Bucket: bucket!,
-        Key: fileName,
-        Body: body,
-        ACL: 'public-read',
-        ContentType: contentType,
-        ContentDisposition: 'inline',
-      };
-      const s3Response = await this.s3.upload(params).promise();
-      const save = {
-        name: updateProductDto.name,
-        designer: updateProductDto.designer,
-        img: s3Response.Location,
-        price: updateProductDto.price,
-      };
-      return this.ProductRepository.update({ id }, { ...save });
+      if (updateProductDto.file) {
+        const bucket = this.S3_bucket;
+        const body = updateProductDto.file.buffer;
+        const contentType = updateProductDto.file.mimetype;
+        const split = updateProductDto.file.originalname.split('.');
+        const extention = split.pop();
+        const s3Key = format(new Date(), 'yyy-MM-dd-hh-mm-ss');
+        const fileName = `file${s3Key}.${extention}`;
+        const params = {
+          Bucket: bucket!,
+          Key: fileName,
+          Body: body,
+          ACL: 'public-read',
+          ContentType: contentType,
+          ContentDisposition: 'inline',
+        };
+        const s3Response = await this.s3.upload(params).promise();
+        const updateFile = {
+          img: s3Response.Location,
+        }
+        return this.ProductRepository.update({ id }, {...updateFile})
+      }
+      return this.ProductRepository.update({ id }, { ...updateProductDto });
     } else {
       throw BadRequest('Product was not found');
     }

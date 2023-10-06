@@ -71,16 +71,10 @@ export class ProductController {
   async update(
     @UploadedFile() file: Express.Multer.File,
     @Param('id') id: string,
-    @Body() body,
+    @Body() updateProductDto: UpdateProductDto,
   ) {
     try {
-      const updateProductDto: UpdateProductDto = {
-        name: body.name,
-        designer: body.designer,
-        file: file,
-        img: body.img,
-        price: body.price,
-      };
+      updateProductDto.file = file
       return this.productService.update(+id, updateProductDto);
     } catch (e) {
       throw e.message;
