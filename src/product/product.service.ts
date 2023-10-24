@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import * as AWS from 'aws-sdk';
 import { format } from 'date-fns';
 import { BadRequest } from '../Utill/responseService';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class ProductService {
@@ -17,6 +18,7 @@ export class ProductService {
     @InjectRepository(Product)
     private readonly ProductRepository: Repository<Product>,
     private readonly configService: ConfigService,
+    private readonly cloudinaryService: CloudinaryService
   ) {
     this.S3_bucket = configService.get<string>('AWS_S3_BUCKET');
     this.s3 = new AWS.S3({
@@ -26,7 +28,16 @@ export class ProductService {
   }
 
   async create(createProductDto: CreateProductDto) {
-    const bucket = this.S3_bucket;
+    const upload = await this.cloudinaryService.uploadImage(createProductDto.file)
+    console.log(upload.url)
+    const save = {
+      name: createProductDto.name,
+      designer: createProductDto.designer,
+      img: upload.url,
+      price: createProductDto.price,
+    };
+    return this.ProductRepository.save(save);
+    /*const bucket = this.S3_bucket;
     const body = createProductDto.file.buffer;
     const contentType = createProductDto.file.mimetype;
     const split = createProductDto.file.originalname.split('.');
@@ -42,13 +53,7 @@ export class ProductService {
       ContentDisposition: 'inline',
     };
     const s3Response = await this.s3.upload(params).promise();
-    const save = {
-      name: createProductDto.name,
-      designer: createProductDto.designer,
-      img: s3Response.Location,
-      price: createProductDto.price,
-    };
-    return this.ProductRepository.save(save);
+    */
   }
 
   findAll() {

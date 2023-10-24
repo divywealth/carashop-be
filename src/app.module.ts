@@ -17,6 +17,7 @@ import { AddressModule } from './address/address.module';
 import { Address } from './address/entities/address.entity';
 import { VerificationModule } from './verification/verification.module';
 import { Verification } from './verification/entities/verification.entity';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { Verification } from './verification/entities/verification.entity';
     SubordeModule,
     AddressModule,
     VerificationModule,
+    CloudinaryModule,
   ],
   controllers: [],
   providers: [],

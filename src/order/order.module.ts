@@ -20,6 +20,7 @@ import { UserproductService } from '../userproduct/userproduct.service';
 import { ValidateHeader } from '../userproduct/middlewares/validate-user-header.middleware';
 import { Address } from '../address/entities/address.entity';
 import { AddressService } from '../address/address.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { AddressService } from '../address/address.service';
     SubordeService,
     UserproductService,
     AddressService,
+    CloudinaryService
   ],
 })
 export class OrderModule implements NestModule {

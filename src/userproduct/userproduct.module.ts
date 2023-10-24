@@ -14,6 +14,7 @@ import { UserService } from 'src/user/user.service';
 import { ProductService } from 'src/product/product.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ValidateHeader } from './middlewares/validate-user-header.middleware';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { ValidateHeader } from './middlewares/validate-user-header.middleware';
     }),
   ],
   controllers: [UserproductController],
-  providers: [UserproductService, UserService, ProductService],
+  providers: [UserproductService, UserService, ProductService, CloudinaryService],
 })
 export class UserproductModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

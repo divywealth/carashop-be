@@ -3,10 +3,12 @@ import { ProductService } from './product.service';
 import { ProductController } from './product.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
+import { CloudinaryProvider } from 'src/cloudinary/cloudinary';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Product])],
   controllers: [ProductController],
-  providers: [ProductService],
+  providers: [ProductService, CloudinaryService],
 })
 export class ProductModule {}
