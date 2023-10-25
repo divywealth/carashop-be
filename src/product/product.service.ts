@@ -89,7 +89,8 @@ export class ProductService {
     });
     if (existingProduct != null) {
       if (updateProductDto.file) {
-        const bucket = this.S3_bucket;
+        const upload = await this.cloudinaryService.uploadImage(updateProductDto.file)
+        /* const bucket = this.S3_bucket;
         const body = updateProductDto.file.buffer;
         const contentType = updateProductDto.file.mimetype;
         const split = updateProductDto.file.originalname.split('.');
@@ -104,9 +105,10 @@ export class ProductService {
           ContentType: contentType,
           ContentDisposition: 'inline',
         };
-        const s3Response = await this.s3.upload(params).promise();
+        const s3Response = await this.s3.upload(params).promise();*/
+
         const updateFile = {
-          img: s3Response.Location,
+          img: upload.url,
         }
         return this.ProductRepository.update({ id }, {...updateFile})
       }
